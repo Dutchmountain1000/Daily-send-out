@@ -155,3 +155,4 @@ try:
 	print("Euro Stoxx 50 compact report sent successfully!")
 except Exception as error:
 	print(f"Error sending email: {error}")
+
