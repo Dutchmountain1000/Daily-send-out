@@ -110,13 +110,16 @@ if not df_stocks.empty:
 else:
 	top_10_gainers = top_10_losers = pd.DataFrame()
 
-plt.figure(figsize=(6.0, 2.2), dpi=150)
+plt.figure(figsize=(7.5, 2.6), dpi=150)
 ytd_normalized = (sx5e_ytd_series / sx5e_ytd_series.iloc[0] - 1) * 100
 plt.plot(ytd_normalized.index, ytd_normalized.values, color="#003366", lw=1.4)
-plt.title(f"Euro Stoxx 50 YTD Performance | Latest: {sx5e_latest_val:,.2f} ({ytd_normalized.iloc[-1]:+.2f}%)", fontsize=9, pad=8)
-plt.ylabel("Return (%)", fontsize=8)
+plt.title(f"Euro Stoxx 50 YTD Performance | Latest: {sx5e_latest_val:,.2f} ({ytd_normalized.iloc[-1]:+.2f}%)", fontsize=9.5, pad=8)
+plt.ylabel("Return (%)", fontsize=8.5)
+plt.xticks(fontsize=8)
+plt.yticks(fontsize=8)
 plt.grid(True, linestyle="--", alpha=0.4)
 plt.tight_layout()
+
 img_buf = io.BytesIO()
 plt.savefig(img_buf, format="png", dpi=160, bbox_inches="tight")
 img_buf.seek(0)
@@ -127,15 +130,13 @@ html_content = f"""
 body {{ font-family: Arial, sans-serif; color: #333; font-size: 13px; }}
 h2 {{ color: #003366; font-size: 16px; }} h3 {{ color: #004080; font-size: 14px; margin-top: 20px; }}
 table {{ border-collapse: collapse; width: 100%; margin: 8px 0 15px; font-size: 12px; }}
-th, td {{ border: 1px solid #ddd; padding: 6px 8px; text-align: left; }}
-th {{ background-color: #f2f2f2; color: #003366; }}
+th, td {{ border: 1px solid #ddd; padding: 6px 8px; text-align: left; }} th {{ background-color: #f2f2f2; color: #003366; }}
 </style></head><body>
 <h2>European Equity Markets &amp; Euro Stoxx 50 Report - {today_str}</h2>
 <h3>Major European Equity Indices</h3>{df_indices.to_html(index=False)}
-<h3>Euro Stoxx 50 YTD Trend</h3><p><img src="cid:ytd_chart" alt="Euro Stoxx 50 YTD Chart" style="width:100%;max-width:500px;height:auto;display:block;"></p>
+<h3>Euro Stoxx 50 YTD Trend</h3><p><img src="cid:ytd_chart" alt="Euro Stoxx 50 YTD Chart" style="width:100%;max-width:600px;height:auto;display:block;"></p>
 <h3>Top 10 Gainers (Euro Stoxx 50 Stocks - 1D)</h3>{top_10_gainers.to_html(index=False)}
-<h3>Top 10 Losers (Euro Stoxx 50 Stocks - 1D)</h3>{top_10_losers.to_html(index=False)}
-</body></html>"""
+<h3>Top 10 Losers (Euro Stoxx 50 Stocks - 1D)</h3>{top_10_losers.to_html(index=False)}</body></html>"""
 
 sender_email = os.environ.get("EMAIL_USER", "cpvanvliet100@gmail.com")
 password = os.environ.get("EMAIL_PASS")
